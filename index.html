@@ -13,12 +13,18 @@
         crossorigin="anonymous"></script>
 
     <script src="webComponent.js"></script>
+    <style>
+        body {
+            background-color: whitesmoke;
+        }
+    </style>
 </head>
 
 <body>
     <signup-form>
-        <p slot="informationText">This is text thas has been customised</p>
+        <p slot="bottomText">This is text thas has been customised</p>
     </signup-form>
+    <iframe style="display: none" src="index.html" frameborder="0"></iframe>
 </body>
 
 </html>

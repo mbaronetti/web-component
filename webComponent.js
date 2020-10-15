@@ -4,29 +4,118 @@ window.supportsShadowDOM = Boolean(HTMLElement.prototype.attachShadow);
 console.log('supports custom elements: ', window.supportsCustomElements);
 console.log('supports shadowDOM: ', window.supportsShadowDOM);
 
-const template = document.createElement('template');
-template.innerHTML = "<div>sample</div>"
-/*`
-<div class="form-field">
-    <label>Email:</label>
-    <input type="email" />
-</div>
-<div class="form-field">
-    <label>Password:</label>
-    <input type="password" />
-</div>
-<slot name="informationText">
-    <p>This is a default piece of information text</p>
-</slot>`;
-*/
-
 class SignupForm extends HTMLElement {
     constructor() {
         super();
+        const template = document.createElement('template');
+        template.innerHTML = `
+        <style>
+            :host {
+                font-family: Source Sans Pro,sans-serif;
+                display: block;
+                width: 40%;
+                margin: 50px auto;
+                background-color: white;
+                padding: 50px;
+            }
+            .signup-header{
+                font-size: 1.25em;
+                padding: 20px 10px;
+                background: #d9dee0;
+                color: #00222d;
+                font-weight: 700;
+            }
+            .text{color: #667a81;}
+        </style>
+        <div class='signup-header'>EASY SIGNUP, NO CATCH!</div>
+        <slot class='text' name="topText">
+            <p>Start your free 30-day trial of Walls.io – after the trial, you can continue to use our Free plan.</p>
+        </slot>
+        <form-field label="Email" type="email"></form-field>
+        <form-field label="Password" type="password"></form-field>
+        <slot class='text' name="bottomText">
+            <p>By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</p>
+        </slot>
+        <primary-button></primary-button>`;
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
     }
 }
 
-customElements.define('signup-form', SignupForm);
+class FormField extends HTMLElement {
+    constructor() {
+        super();
+        const shadowRoot = this.attachShadow({ mode: 'open' });
+        const template = document.createElement('template');
+        template.innerHTML = `
+            <style>
+            input {
+                font-family: Source Sans Pro,sans-serif;
+                box-sizing:border-box;
+                color: #334e57;
+                font-weight: 400;
+                width: 100%;
+                font-size: 1.25em;
+                box-shadow: 1px 1px 21px 0 rgba(0,34,45,.15);
+                -webkit-appearance: none;
+                border: 1px solid rgba(0,34,45,.1);
+                border-radius: 7px;
+                padding: 20px 10px;
+                margin: 10px auto;
+            }
+            </style>
+            <div class="form-field">
+                <input type="text" />
+            </div>
+        `;
+        shadowRoot.appendChild(template.content.cloneNode(true));
 
+        this.label = shadowRoot.querySelector('label');
+        this.input = shadowRoot.querySelector('input');
+    }
+    static get observedAttributes() {
+        return ['label', 'type'];
+    }
+    attributeChangedCallback(name, oldVal, newVal) {
+        switch (name) {
+            case 'label':
+                this.input.placeholder = newVal;
+                break;
+            case 'type':
+                this.input.type = newVal;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+class PrimaryButton extends HTMLElement {
+    constructor() {
+        super();
+        const shadowRoot = this.attachShadow({ mode: 'open' });
+        const template = document.createElement('template');
+        template.innerHTML = `
+            <style>
+            button{
+                font-family: Source Sans Pro,sans-serif;
+                padding: 10px 40px;
+                color: #00222d;
+                font-weight: 700;
+                text-transform: uppercase;
+                border: 2px solid #f3b200;
+                border-radius: 5em;
+                background: #f3b200;
+                cursor: pointer;
+                font-size: 1em;
+            }
+            </style>
+            <button>Sign up</button>
+        `;
+        shadowRoot.appendChild(template.content.cloneNode(true));
+    }
+}
+
+customElements.define('form-field', FormField);
+customElements.define('primary-button', PrimaryButton);
+customElements.define('signup-form', SignupForm);

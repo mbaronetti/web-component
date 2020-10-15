@@ -1,3 +1,11 @@
 :host {
     display: block;
+    width: 30%;
+    margin: auto;
+}
+input {
+    color: red
+}
+button {
+    color: red;
 }
