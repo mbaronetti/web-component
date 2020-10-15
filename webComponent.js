@@ -4,7 +4,7 @@ window.supportsShadowDOM = 'attachShadow' in window;
 
 console.log('supports custom elements: ' , window.supportsCustomElements)
 console.log('supports shadowDOM: ' , window.supportsShadowDOM)
-
+/*
 const template = document.createElement('template');
 template.innerHTML = `
 <div class="form-field">
@@ -28,3 +28,4 @@ class SignupForm extends HTMLElement {
 }
 
 customElements.define('signup-form', SignupForm);
+*/
