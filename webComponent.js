@@ -19,6 +19,7 @@ class SignupForm extends HTMLElement {
                 padding: 50px;
             }
             .signup-header{
+                text-transform: uppercase;
                 font-size: 1.25em;
                 padding: 20px 10px;
                 background: #d9dee0;
@@ -26,8 +27,16 @@ class SignupForm extends HTMLElement {
                 font-weight: 700;
             }
             .text{color: #667a81;}
+            .coupon-slot{
+                margin:20px 0;
+                display:block;
+            }
         </style>
-        <div class='signup-header'>EASY SIGNUP, NO CATCH!</div>
+        <div class='signup-header'>
+            <slot name='title'>
+                EASY SIGNUP, NO CATCH!
+            </slot>
+        </div>
         <slot class='text' name="topText">
             <p>Start your free 30-day trial of Walls.io – after the trial, you can continue to use our Free plan.</p>
         </slot>
@@ -36,6 +45,7 @@ class SignupForm extends HTMLElement {
         <slot class='text' name="bottomText">
             <p>By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</p>
         </slot>
+        <slot name='coupon' class='coupon-slot'></slot>
         <primary-button></primary-button>`;
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
@@ -72,21 +82,8 @@ class FormField extends HTMLElement {
 
         this.label = shadowRoot.querySelector('label');
         this.input = shadowRoot.querySelector('input');
-    }
-    static get observedAttributes() {
-        return ['label', 'type'];
-    }
-    attributeChangedCallback(name, oldVal, newVal) {
-        switch (name) {
-            case 'label':
-                this.input.placeholder = newVal;
-                break;
-            case 'type':
-                this.input.type = newVal;
-                break;
-            default:
-                break;
-        }
+        this.input.placeholder = this.getAttribute('label');
+        this.input.type = this.getAttribute('type');
     }
 }
 
