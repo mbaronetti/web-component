@@ -1,4 +1,7 @@
 
+window.supportsCustomElements = 'customElements' in window;
+window.supportsShadowDOM = 'attachShadow' in window;
+
 const template = document.createElement('template');
 template.innerHTML = `
 <div class="form-field">
