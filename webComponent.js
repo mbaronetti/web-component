@@ -5,7 +5,8 @@ console.log('supports custom elements: ', window.supportsCustomElements);
 console.log('supports shadowDOM: ', window.supportsShadowDOM);
 
 const template = document.createElement('template');
-template.innerHTML = `
+template.innerHTML = "<div>sample</div>"
+/*`
 <div class="form-field">
     <label>Email:</label>
     <input type="email" />
@@ -17,6 +18,7 @@ template.innerHTML = `
 <slot name="informationText">
     <p>This is a default piece of information text</p>
 </slot>`;
+*/
 
 class SignupForm extends HTMLElement {
     constructor() {
