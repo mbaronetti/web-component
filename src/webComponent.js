@@ -10,14 +10,6 @@ class SignupForm extends HTMLElement {
         const template = document.createElement('template');
         template.innerHTML = `
         <style>
-            /* :host {
-                font-family: Source Sans Pro,sans-serif;
-                display: block;
-                width: 40%;
-                margin: 50px auto;
-                background-color: white;
-                padding: 50px;
-            } */
             .signup-form {
                 font-family: Source Sans Pro,sans-serif;
                 background-color: white;color:green;
@@ -52,7 +44,22 @@ class SignupForm extends HTMLElement {
                 <slot name="bottomText">By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</slot>
             </p>
             <slot name='coupon' class='coupon-slot'></slot>
-            <primary-button></primary-button>
+            
+            <style>
+            button{
+                font-family: Source Sans Pro,sans-serif;
+                padding: 10px 40px;
+                color: #00222d;
+                font-weight: 700;
+                text-transform: uppercase;
+                border: 2px solid #f3b200;
+                border-radius: 5em;
+                background: #f3b200;
+                cursor: pointer;
+                font-size: 1em;
+            }
+            </style>
+            <button id='signupButton'>Sign up</button>
         </div>`;
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
@@ -67,8 +74,14 @@ class SignupForm extends HTMLElement {
                 );
                 const data = await response.json();
                 console.log(data);
+                this.shadowRoot.getElementById(
+                    'signupButton'
+                ).style.backgroundColor = 'green';
             } catch (err) {
                 console.log(err);
+                this.shadowRoot.getElementById(
+                    'signupButton'
+                ).style.backgroundColor = 'red';
             }
         };
         getUserStatus();
@@ -129,21 +142,6 @@ class PrimaryButton extends HTMLElement {
         const shadowRoot = this.attachShadow({ mode: 'open' });
         const template = document.createElement('template');
         template.innerHTML = `
-            <style>
-            button{
-                font-family: Source Sans Pro,sans-serif;
-                padding: 10px 40px;
-                color: #00222d;
-                font-weight: 700;
-                text-transform: uppercase;
-                border: 2px solid #f3b200;
-                border-radius: 5em;
-                background: #f3b200;
-                cursor: pointer;
-                font-size: 1em;
-            }
-            </style>
-            <button>Sign up</button>
         `;
         shadowRoot.appendChild(template.content.cloneNode(true));
     }
