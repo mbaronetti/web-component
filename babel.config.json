@@ -1,4 +1,13 @@
 {
-  "presets": ["@babel/preset-env"],
-  "plugins": ["@babel/plugin-transform-property-mutators"]
+    "presets": [
+        [
+            "env",
+            {
+                "targets": {
+                    "browsers": ["last 2 Chrome versions"]
+                }
+            }
+        ]
+    ],
+    "plugins": ["@babel/plugin-transform-property-mutators"]
 }

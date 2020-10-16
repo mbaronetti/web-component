@@ -58,6 +58,16 @@ class SignupForm extends HTMLElement {
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
     }
+
+    connectedCallback() {
+        const getUserStatus = async () => {
+            const response = await fetch("https://walls.io/user_status.json" , {credentials: "include"});
+            const data = await response.json();
+            console.log(data)
+            
+        }
+        getUserStatus()
+    }
 }
 
 class FormField extends HTMLElement {
