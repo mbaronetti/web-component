@@ -1,0 +1,25 @@
+{
+  "name": "custom-elements",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webComponent.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbaronetti/web-component.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mbaronetti/web-component/issues"
+  },
+  "homepage": "https://github.com/mbaronetti/web-component#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.1",
+    "@babel/preset-env": "^7.12.1"
+  }
+}
