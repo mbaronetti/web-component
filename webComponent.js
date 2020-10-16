@@ -42,9 +42,9 @@ class SignupForm extends HTMLElement {
         </slot>
         <form-field label="Email" type="email"></form-field>
         <form-field label="Password" type="password"></form-field>
-        <slot class='text' name="bottomText">
-            <p>By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</p>
-        </slot>
+        <p class='text'>
+            <slot name="bottomText">By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</slot>
+        </p>
         <slot name='coupon' class='coupon-slot'></slot>
         <primary-button></primary-button>`;
         const shadowRoot = this.attachShadow({ mode: 'open' });
@@ -82,8 +82,21 @@ class FormField extends HTMLElement {
 
         this.label = shadowRoot.querySelector('label');
         this.input = shadowRoot.querySelector('input');
-        this.input.placeholder = this.getAttribute('label');
-        this.input.type = this.getAttribute('type');
+    }
+    static get observedAttributes() {
+        return ["label", "type"];
+    }
+    attributeChangedCallback(name, oldVal, newVal) {
+        switch (name) {
+            case "label":
+                this.input.placeholder = newVal;
+                break;
+            case "type":
+                this.input.type = newVal;
+                break;
+            default:
+                break;
+        }
     }
 }
 
