@@ -1,3 +1,4 @@
+
 window.supportsCustomElements = 'customElements' in window;
 window.supportsShadowDOM = Boolean(HTMLElement.prototype.attachShadow);
 
@@ -84,14 +85,14 @@ class FormField extends HTMLElement {
         this.input = shadowRoot.querySelector('input');
     }
     static get observedAttributes() {
-        return ["label", "type"];
+        return ['label', 'type'];
     }
     attributeChangedCallback(name, oldVal, newVal) {
         switch (name) {
-            case "label":
+            case 'label':
                 this.input.placeholder = newVal;
                 break;
-            case "type":
+            case 'type':
                 this.input.type = newVal;
                 break;
             default:
