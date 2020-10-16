@@ -11,14 +11,19 @@ class SignupForm extends HTMLElement {
         const template = document.createElement('template');
         template.innerHTML = `
         <style>
-            :host {
+            /* :host {
                 font-family: Source Sans Pro,sans-serif;
                 display: block;
                 width: 40%;
                 margin: 50px auto;
                 background-color: white;
                 padding: 50px;
-            }
+            } */
+            .signup-form {
+                font-family: Source Sans Pro,sans-serif;
+                background-color: white;color:green;
+                padding: 50px;
+            } 
             .signup-header{
                 text-transform: uppercase;
                 font-size: 1.25em;
@@ -33,21 +38,23 @@ class SignupForm extends HTMLElement {
                 display:block;
             }
         </style>
-        <div class='signup-header'>
-            <slot name='title'>
-                EASY SIGNUP, NO CATCH!
+        <div class="signup-form">
+            <div class='signup-header'>
+                <slot name='title'>
+                    EASY SIGNUP, NO CATCH!
+                </slot>
+            </div>
+            <slot class='text' name="topText">
+                <p>Start your free 30-day trial of Walls.io – after the trial, you can continue to use our Free plan.</p>
             </slot>
-        </div>
-        <slot class='text' name="topText">
-            <p>Start your free 30-day trial of Walls.io – after the trial, you can continue to use our Free plan.</p>
-        </slot>
-        <form-field label="Email" type="email"></form-field>
-        <form-field label="Password" type="password"></form-field>
-        <p class='text'>
-            <slot name="bottomText">By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</slot>
-        </p>
-        <slot name='coupon' class='coupon-slot'></slot>
-        <primary-button></primary-button>`;
+            <form-field label="Email" type="email"></form-field>
+            <form-field label="Password" type="password"></form-field>
+            <p class='text'>
+                <slot name="bottomText">By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</slot>
+            </p>
+            <slot name='coupon' class='coupon-slot'></slot>
+            <primary-button></primary-button>
+        </div>`;
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
     }
@@ -99,6 +106,7 @@ class FormField extends HTMLElement {
                 break;
         }
     }
+
 }
 
 class PrimaryButton extends HTMLElement {

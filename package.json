@@ -4,6 +4,7 @@
   "description": "",
   "main": "webComponent.js",
   "scripts": {
+    "start": "npm node server.js",
     "build": "babel src -d lib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
