@@ -1,4 +1,3 @@
-
 window.supportsCustomElements = 'customElements' in window;
 window.supportsShadowDOM = Boolean(HTMLElement.prototype.attachShadow);
 
@@ -61,12 +60,18 @@ class SignupForm extends HTMLElement {
 
     connectedCallback() {
         const getUserStatus = async () => {
-            const response = await fetch("https://walls.io/user_status.json" , {credentials: "include"});
-            const data = await response.json();
-            console.log(data)
-            
-        }
-        getUserStatus()
+            try {
+                const response = await fetch(
+                    'https://walls.io/user_status.json',
+                    { credentials: 'include' }
+                );
+                const data = await response.json();
+                console.log(data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        getUserStatus();
     }
 }
 
@@ -116,7 +121,6 @@ class FormField extends HTMLElement {
                 break;
         }
     }
-
 }
 
 class PrimaryButton extends HTMLElement {
