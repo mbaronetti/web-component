@@ -66,9 +66,9 @@ class SignupForm extends HTMLElement {
     }
 
     connectedCallback() {
-        this.shadowRoot.getElementById(
-            'signupButton'
-        ).style.backgroundColor = 'red';
+        this.shadowRoot.querySelector(
+            '#signupButton'
+        ).style.backgroundColor = 'black';
         const getUserStatus = async () => {
             try {
                 const response = await fetch(
