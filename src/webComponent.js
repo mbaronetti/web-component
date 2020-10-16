@@ -28,17 +28,6 @@ class SignupForm extends HTMLElement {
                 margin:20px 0;
                 display:block;
             }
-        </style>
-        <div class="signup-container">
-            <div class='signup-header'>
-                <slot name='title'>
-                    EASY SIGNUP, NO CATCH!
-                </slot>
-            </div>
-            <slot class='text' name="topText">
-                <p>Start your free 30-day trial of Walls.io – after the trial, you can continue to use our Free plan.</p>
-            </slot>
-            <style>
             input {
                 font-family: Source Sans Pro,sans-serif;
                 box-sizing:border-box;
@@ -53,19 +42,6 @@ class SignupForm extends HTMLElement {
                 padding: 20px 10px;
                 margin: 10px auto;
             }
-            </style>
-            <div class="form-field">
-                <input type="email" placeholder="email" />
-            </div>
-            <div class="form-field">
-                <input type="password" placeholder="password" />
-            </div>
-            <p class='text'>
-                <slot name="bottomText">By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</slot>
-            </p>
-            <slot name='coupon' class='coupon-slot'></slot>
-            
-            <style>
             button{
                 font-family: Source Sans Pro,sans-serif;
                 padding: 10px 40px;
@@ -78,9 +54,40 @@ class SignupForm extends HTMLElement {
                 cursor: pointer;
                 font-size: 1em;
             }
-            </style>
+            a{
+                color: #00222d;
+                text-decoration: none;
+                font-weight: 600;
+            }
+            a:hover{
+                color: #006360;
+            }
+        </style>
+        <form class="signup-container" onsubmit="event.preventDefault()">
+            <div class='signup-header'>
+                <slot name='title'>
+                    EASY SIGNUP, NO CATCH!
+                </slot>
+            </div>
+            <slot class='text' name="topText">
+                <p>Start your free 30-day trial of Walls.io – after the trial, you can continue to use our Free plan.</p>
+            </slot>
+            <div id="errorMsg"></div>
+            <div class="form-field">
+                <input type="email" placeholder="email" id="emailInput"/>
+            </div>
+            <div class="form-field">
+                <input type="password" placeholder="password" id="passwordInput"/>
+            </div>
+            <p class='text'>
+                <slot name="bottomText">By submitting this form and providing personal information, I agree that my data is saved and might be used by Walls.io to contact me regarding offers or product news by phone, email or newsletter. I can revoke consent any time in my account settings.</slot>
+            </p>
+            <slot name='coupon' class='coupon-slot'></slot>
             <button id='signupButton'>Sign up</button>
-        </div>`;
+            <p class='text'>
+                We care for the safety of the information you provide. Read more about our <a href="#">privacy policy.</a>
+            </p>
+        </form>`;
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
     }
@@ -93,10 +100,7 @@ class SignupForm extends HTMLElement {
                     { credentials: 'include' }
                 );
                 const data = await response.json();
-                console.log(data);
-                this.shadowRoot.getElementById(
-                    'signupButton'
-                ).style.backgroundColor = 'green';
+                if (data.isLoggedIn) window.location.href = 'http://walls.io';
             } catch (err) {
                 console.log(err);
                 this.shadowRoot.getElementById(
@@ -106,24 +110,34 @@ class SignupForm extends HTMLElement {
         };
         getUserStatus();
         const inputFields = this.shadowRoot.querySelectorAll('input');
+        const emailInput = this.shadowRoot.getElementById('emailInput');
+        const passwordInput = this.shadowRoot.getElementById('passwordInput');
+
+        const validateEmail = (value) => {
+            const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if (!value.length || !emailRegex.test(value)) {
+                return false;
+            }
+            return true;
+        };
+
+        const errorMsg = () => {
+            if (!emailInput.value.length && !passwordInput.value.length) {
+                return 'Please provide email and password';
+            }
+            if (!validateEmail(emailInput.value)) {
+                return 'Please provide a valid email address';
+            }
+            if (!passwordInput.value.length) {
+                return 'Please fill out your password';
+            }
+        };
+
         const validate = () => {
-            inputFields.forEach((item) => {
-                if (!item.value.length) {
-                    item.style.borderColor = 'red';
-                } else {
-                    item.style.borderColor = 'green';
-                }
-            });
+            this.shadowRoot.getElementById('errorMsg').textContent = errorMsg();
         };
-        const validateOnKeyUp = () => {
-            inputFields.forEach((item) => {
-                if (!item.value.length) {
-                    item.style.borderColor = 'red';
-                } else {
-                    item.style.borderColor = 'green';
-                }
-            });
-        };
+
+        const validateOnKeyUp = () => {};
         this.shadowRoot
             .getElementById('signupButton')
             .addEventListener('click', () => validate());
